@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import generic
 
 from .models import (Position,
@@ -41,3 +42,54 @@ class TaskListView(generic.ListView):
     context_object_name = "task_list"
     template_name = "catalog/task_list.html"
     paginate_by = 5
+
+
+class PositionCreateView(generic.CreateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("catalog:position-list")
+
+
+class PositionUpdateView(generic.UpdateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("catalog:position-list")
+
+
+class PositionDeleteView(generic.DeleteView):
+    model = Position
+    success_url = reverse_lazy("catalog:position-list")
+
+
+class WorkerCreateView(generic.CreateView):
+    model = Worker
+    fields = "__all__"
+    success_url = reverse_lazy("catalog:worker-list")
+
+
+class WorkerUpdateView(generic.UpdateView):
+    model = Worker
+    fields = "__all__"
+    success_url = reverse_lazy("catalog:worker-list")
+
+
+class WorkerDeleteView(generic.DeleteView):
+    model = Worker
+    success_url = reverse_lazy("")
+
+
+class TaskCreateView(generic.CreateView):
+    model = Task
+    fields = "__all__"
+    success_url = reverse_lazy("catalog:task-list")
+
+
+class TaskUpdateView(generic.UpdateView):
+    model = Task
+    fields = "__all__"
+    success_url = reverse_lazy("catalog:task-list")
+
+
+class TaskDeleteView(generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy("catalog:task-list")
