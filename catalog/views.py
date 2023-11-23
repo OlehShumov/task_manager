@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import (Position,
                      Worker,
@@ -9,9 +11,11 @@ from .forms import (WorkerSearchForm,
                     PositionSearchForm,
                     TaskSearchForm,
                     TaskForm,
-                    WorkerCreationForm)
+                    WorkerCreationForm,
+                    WorkerUpdateForm,
+                    TaskUpdateForm)
 
-
+@login_required
 def index(request):
     """View function for the home page of the site."""
 
@@ -28,7 +32,7 @@ def index(request):
     return render(request, "catalog/index.html", context=context)
 
 
-class PositionListView(generic.ListView):
+class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
     context_object_name = "position_list"
     template_name = "catalog/position_list.html"
@@ -54,7 +58,7 @@ class PositionListView(generic.ListView):
         return queryset
 
 
-class WorkerListView(generic.ListView):
+class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
     context_object_name = "worker_list"
     template_name = "catalog/worker_list.html"
@@ -80,7 +84,7 @@ class WorkerListView(generic.ListView):
         return queryset
 
 
-class TaskListView(generic.ListView):
+class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Worker
     queryset = Task.objects.all().select_related("task_type").prefetch_related("assignees__tasks")
     context_object_name = "task_list"
@@ -107,52 +111,61 @@ class TaskListView(generic.ListView):
         return queryset
 
 
-class PositionCreateView(generic.CreateView):
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
     model = Position
     fields = "__all__"
     success_url = reverse_lazy("catalog:position-list")
 
 
-class PositionUpdateView(generic.UpdateView):
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Position
     fields = "__all__"
     success_url = reverse_lazy("catalog:position-list")
 
 
-class PositionDeleteView(generic.DeleteView):
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
     success_url = reverse_lazy("catalog:position-list")
 
 
-class WorkerCreateView(generic.CreateView):
+class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Worker
     form_class = WorkerCreationForm
     success_url = reverse_lazy("catalog:worker-list")
 
 
-class WorkerUpdateView(generic.UpdateView):
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
-    fields = "__all__"
+    form_class = WorkerUpdateForm
     success_url = reverse_lazy("catalog:worker-list")
 
 
-class WorkerDeleteView(generic.DeleteView):
+class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Worker
     success_url = reverse_lazy("catalog:worker-list")
 
 
-class TaskCreateView(generic.CreateView):
+class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
     form_class = TaskForm
     success_url = reverse_lazy("catalog:task-list")
 
 
-class TaskUpdateView(generic.UpdateView):
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Task
-    fields = "__all__"
+    form_class = TaskUpdateForm
     success_url = reverse_lazy("catalog:task-list")
 
 
-class TaskDeleteView(generic.DeleteView):
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Task
     success_url = reverse_lazy("catalog:task-list")
+
+
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Task
+    queryset = Task.objects.all().select_related("task_type").prefetch_related("assignees__tasks")
+
+
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Worker
