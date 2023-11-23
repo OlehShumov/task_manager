@@ -39,9 +39,11 @@ class WorkerListView(generic.ListView):
 
 class TaskListView(generic.ListView):
     model = Worker
+    queryset = Task.objects.all().select_related("task_type").prefetch_related("assignees__tasks")
     context_object_name = "task_list"
     template_name = "catalog/task_list.html"
     paginate_by = 5
+
 
 
 class PositionCreateView(generic.CreateView):
