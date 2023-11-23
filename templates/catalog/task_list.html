@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+  <h1>
+    Tasks list
+    <a href="{% url 'catalog:task-create' %}" class="btn btn-primary link-to-page" style="float: right">
+      Create
+    </a>
+  </h1>
+  <form action="" method="get">
+    {{ search_form|crispy }}
+    <input type="submit" class="btn btn-primary">
+  </form>
+  {% if task_list %}
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Deadline</th>
+        <th>Is Completed?</th>
+        <th>Priority</th>
+        <th>Task Type</th>
+        <th>Assignees</th>
+        <th>Actions</th>
+      </tr>
+
+      {% for task in task_list %}
+        <tr>
+          <td><a href="{% url 'catalog:task-detail' pk=task.id %}">{{ task.name }}</a></td>
+          <td>{{ task.description }}</td>
+          <td>{{ task.deadline }}</td>
+          <td>{{ task.is_completed }}</td>
+          <td>{{ task.priority }}</td>
+          <td>{{ task.task_type.name }}</td>
+          <td>
+            {% for assignee in task.assignees.all %}
+              {{ assignee.username }}{% if not forloop.last %}, {% endif %}
+            {% empty %}
+              No Assignees
+            {% endfor %}
+          </td>
+          <td>
+            <a href="{% url 'catalog:task-update' pk=task.id %}">Update</a>
+            <a style="color: red" href="{% url 'catalog:task-delete' pk=task.id %}">Delete</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+      <p>There are no tasks.</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+  <h1>
+    Positions List
+    <a href="{% url 'catalog:position-create' %}" class="btn btn-primary link-to-page" style="float: right">
+      Create
+    </a>
+  </h1>
+  <form action="" method="get">
+    {{ search_form|crispy }}
+    <input type="submit" class="btn btn-primary">
+  </form>
+  {% if position_list %}
+    <table class="table">
+      <tr>
+        <th>Name</th>
+      </tr>
+
+      {% for position in position_list%}
+        <tr>
+          <td>
+              {{ position.name }}
+          </td>
+          <td>
+              <a href="{% url 'catalog:position-update' pk=position.id %}">
+                Update
+              </a>
+            </td>
+            <td>
+              <a style="color: red"
+                href="{% url 'catalog:position-delete' pk=position.id %}">
+                Delete
+              </a>
+            </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+      <p>There are no positions.</p>
+  {% endif %}
+{% endblock %}
