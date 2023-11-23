@@ -15,6 +15,7 @@ from .forms import (WorkerSearchForm,
                     WorkerUpdateForm,
                     TaskUpdateForm)
 
+
 @login_required
 def index(request):
     """View function for the home page of the site."""
@@ -128,7 +129,7 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("catalog:position-list")
 
 
-class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+class WorkerCreateView(generic.CreateView):
     model = Worker
     form_class = WorkerCreationForm
     success_url = reverse_lazy("catalog:worker-list")
