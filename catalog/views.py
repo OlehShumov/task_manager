@@ -5,6 +5,11 @@ from django.views import generic
 from .models import (Position,
                      Worker,
                      Task)
+from .forms import (WorkerSearchForm,
+                    PositionSearchForm,
+                    TaskSearchForm,
+                    TaskForm,
+                    WorkerCreationForm)
 
 
 def index(request):
@@ -29,12 +34,50 @@ class PositionListView(generic.ListView):
     template_name = "catalog/position_list.html"
     paginate_by = 5
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = PositionSearchForm(
+            initial={
+                "name": name
+            }
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Position.objects.all()
+        form = PositionSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+        return queryset
+
 
 class WorkerListView(generic.ListView):
     model = Worker
     context_object_name = "worker_list"
     template_name = "catalog/worker_list.html"
     paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        username = self.request.GET.get("username", "")
+        context["search_form"] = WorkerSearchForm(
+            initial={
+                "username": username
+            }
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Worker.objects.all()
+        form = WorkerSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                username__icontains=form.cleaned_data["username"]
+            )
+        return queryset
 
 
 class TaskListView(generic.ListView):
@@ -44,6 +87,24 @@ class TaskListView(generic.ListView):
     template_name = "catalog/task_list.html"
     paginate_by = 5
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = TaskSearchForm(
+            initial={
+                "name": name
+            }
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Task.objects.all()
+        form = TaskSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+        return queryset
 
 
 class PositionCreateView(generic.CreateView):
@@ -65,7 +126,7 @@ class PositionDeleteView(generic.DeleteView):
 
 class WorkerCreateView(generic.CreateView):
     model = Worker
-    fields = "__all__"
+    form_class = WorkerCreationForm
     success_url = reverse_lazy("catalog:worker-list")
 
 
@@ -77,12 +138,12 @@ class WorkerUpdateView(generic.UpdateView):
 
 class WorkerDeleteView(generic.DeleteView):
     model = Worker
-    success_url = reverse_lazy("")
+    success_url = reverse_lazy("catalog:worker-list")
 
 
 class TaskCreateView(generic.CreateView):
     model = Task
-    fields = "__all__"
+    form_class = TaskForm
     success_url = reverse_lazy("catalog:task-list")
 
 
