@@ -17,10 +17,9 @@ class Position(models.Model):
 
 
 class Worker(AbstractUser):
-    position = models.ForeignKey(Position,
-                                 on_delete=models.SET_NULL,
-                                 related_name="workers",
-                                 null=True)
+    position = models.ForeignKey(
+        Position, on_delete=models.SET_NULL, related_name="workers", null=True
+    )
 
     class Meta:
         verbose_name = "worker"
@@ -36,13 +35,14 @@ class Task(models.Model):
         MEDIUM = "M", "medium-priority"
         LOW = "L", "low-priority"
         NO = "N", "no-priority"
+
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     deadline = models.DateField()
     is_completed = models.BooleanField()
-    priority = models.CharField(max_length=15,
-                                choices=Priority.choices,
-                                default=Priority.NO)
+    priority = models.CharField(
+        max_length=15, choices=Priority.choices, default=Priority.NO
+    )
     task_type = models.ForeignKey(TaskType, on_delete=models.SET_NULL, null=True)
     assignees = models.ManyToManyField(Worker, related_name="tasks")
 

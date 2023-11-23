@@ -1,21 +1,23 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
-from .views import (index,
-                    PositionListView,
-                    WorkerListView,
-                    TaskListView,
-                    PositionCreateView,
-                    PositionUpdateView,
-                    PositionDeleteView,
-                    WorkerCreateView,
-                    WorkerUpdateView,
-                    WorkerDeleteView,
-                    TaskCreateView,
-                    TaskUpdateView,
-                    TaskDeleteView,
-                    TaskDetailView,
-                    WorkerDetailView)
+from .views import (
+    index,
+    PositionListView,
+    WorkerListView,
+    TaskListView,
+    PositionCreateView,
+    PositionUpdateView,
+    PositionDeleteView,
+    WorkerCreateView,
+    WorkerUpdateView,
+    WorkerDeleteView,
+    TaskCreateView,
+    TaskUpdateView,
+    TaskDeleteView,
+    TaskDetailView,
+    WorkerDetailView,
+)
 
 urlpatterns = [
     path("", index, name="index"),
@@ -81,8 +83,8 @@ urlpatterns = [
     ),
     path("tasks/<int:pk>/", TaskDetailView.as_view(), name="task-detail"),
     path("workers/<int:pk>/", WorkerDetailView.as_view(), name="worker-detail"),
-    path('login/', LoginView.as_view(), name="login"),
-    path('logout/', LogoutView.as_view(), name="logout"),
+    path("login/", LoginView.as_view(), name="login"),
+    path("logout/", LogoutView.as_view(), name="logout"),
 ]
 
 app_name = "catalog"

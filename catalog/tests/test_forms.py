@@ -1,19 +1,23 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from catalog.forms import (WorkerSearchForm,
-                           PositionSearchForm,
-                           TaskSearchForm,
-                           TaskForm,
-                           TaskUpdateForm,
-                           WorkerCreationForm,
-                           WorkerUpdateForm)
+from catalog.forms import (
+    WorkerSearchForm,
+    PositionSearchForm,
+    TaskSearchForm,
+    TaskForm,
+    TaskUpdateForm,
+    WorkerCreationForm,
+    WorkerUpdateForm,
+)
 from catalog.models import Task, Position, TaskType
 
 
 class FormsTest(TestCase):
     def setUp(self):
         position = Position.objects.create(name="Test Position")
-        user = get_user_model().objects.create_user(username="test_user", password="test_password", position=position)
+        user = get_user_model().objects.create_user(
+            username="test_user", password="test_password", position=position
+        )
 
     def test_worker_search_form(self):
         form_data = {"username": "test_user"}
@@ -53,7 +57,9 @@ class FormsTest(TestCase):
             "task_type": TaskType.objects.create(name="Updated Type").id,
             "assignees": [get_user_model().objects.first().id],
         }
-        task = Task.objects.create(name="Test Task", deadline="2023-01-01", is_completed=False)
+        task = Task.objects.create(
+            name="Test Task", deadline="2023-01-01", is_completed=False
+        )
         form = TaskUpdateForm(data=form_data, instance=task)
         self.assertTrue(form.is_valid())
 
@@ -76,6 +82,8 @@ class FormsTest(TestCase):
             "last_name": "User",
             "position": Position.objects.first().id,
         }
-        worker = get_user_model().objects.create_user(username="test_user1", password="test_password")
+        worker = get_user_model().objects.create_user(
+            username="test_user1", password="test_password"
+        )
         form = WorkerUpdateForm(data=form_data, instance=worker)
         self.assertTrue(form.is_valid())

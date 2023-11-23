@@ -22,8 +22,7 @@ class TaskModelTest(TestCase):
 
     def test_task_str_method(self):
         self.assertEqual(
-            str(self.task),
-            "Task: Test Task, status: In work, priority: H"
+            str(self.task), "Task: Test Task, status: In work, priority: H"
         )
 
     def test_task_priority_choices(self):
