@@ -55,9 +55,34 @@ class TaskForm(forms.ModelForm):
         fields = "__all__"
 
 
+class TaskUpdateForm(forms.ModelForm):
+    assignees = forms.ModelMultipleChoiceField(
+        queryset=get_user_model().objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+    class Meta:
+        model = Task
+        fields = "__all__"
+
+
 class WorkerCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Worker
         fields = UserCreationForm.Meta.fields + (
             "position",
         )
+
+
+class WorkerUpdateUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Worker
+        fields = ("username",
+                  "first_name",
+                  "last_name",
+                  "position")
+
+
+
+
+
