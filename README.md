@@ -71,9 +71,9 @@ and search information using a user-friendly interface
    ```
 
 10) Go to [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-11) Admin user:
+11) Test user:
    ```
-   username: admin_user
-   password: vodgY3-sygvuk-fuspor
+   username: test
+   password: 1234TEST
    ```
 
