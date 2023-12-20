@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card mt-4">
+        <div class="card-body">
+            <h2 class="card-title">Data records</h2>
+            <p class="card-text">Our task manager has the following entries:</p>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>Workers:</strong> {{ num_workers }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Tasks:</strong> {{ num_tasks }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Positions:</strong> {{ num_positions }}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

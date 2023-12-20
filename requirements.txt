@@ -1,0 +1,16 @@
+asgiref
+click
+crispy-bootstrap4
+dj-database-url
+Django
+django-crispy-forms
+gunicorn
+mypy-extensions
+packaging
+pathspec
+platformdirs
+psycopg2-binary
+sqlparse
+tomli
+typing_extensions
+whitenoise

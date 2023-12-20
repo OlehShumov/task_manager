@@ -1,0 +1,34 @@
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+       <a class="navbar-brand" href="{% url 'catalog:index' %}">Task manager</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'catalog:task-list' %}">All tasks</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'catalog:worker-list' %}">All workers</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'catalog:position-list' %}">All positions</a>
+    </li>
+  </ul>
+
+  <ul class="navbar-nav">
+    {% if user.is_authenticated %}
+      <li class="nav-item">
+        <span class="nav-link">User: <a href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'catalog:logout'%}?next={{request.path}}">Logout</a>
+      </li>
+    {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'catalog:login'%}?next={{request.path}}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'catalog:worker-create'%}">Register</a>
+      </li>
+    {% endif %}
+  </ul>
+</div>

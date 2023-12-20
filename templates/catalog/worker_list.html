@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+    <h1>
+      Workers list
+      <a href="{% url 'catalog:worker-create' %}" class="btn btn-primary link-to-page" style="float: right">
+        Create
+      </a>
+    </h1>
+    <form action="" method="get">
+      {{ search_form|crispy }}
+      <input type="submit" class="btn btn-primary" style="display: inline-block">
+    </form>
+    {% if worker_list %}
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Position</th>
+      </tr>
+    {% for worker in worker_list %}
+      <tr>
+        <td><a href="{% url 'catalog:worker-detail' pk=worker.id %}">{{ worker.id }}</a></td>
+        <td>{{ worker.username }}</td>
+        <td>{{ worker.first_name }}</td>
+        <td>{{ worker.last_name }}</td>
+        <td>{{ worker.position }}</td>
+        <td>
+          <a href="{% url 'catalog:worker-update' pk=worker.id %}">Update</a>
+          <a style="color: red" href="{% url 'catalog:worker-delete' pk=worker.id %}">Delete</a>
+        </td>
+      </tr>
+    {% endfor %}
+
+    </table>
+    {% else %}
+      <p>There are no workers.</p>
+    {% endif %}
+{% endblock %}
